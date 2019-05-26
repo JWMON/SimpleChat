@@ -1,3 +1,5 @@
+//
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -49,9 +51,19 @@ class ChatThread extends Thread{
 			while((line = br.readLine()) != null){
 				if(line.equals("/quit"))
 					break;
-				if(line.indexOf("/to ") == 0){
+				else if(line.contains("meanword") || line.contains("cuss1") || line.contains("cuss2") || line.contains("cuss3") || line.contains("cuss4")) {
+					PrintWriter p = (PrintWriter)hm.get(id);
+					p.println("WARNING : Profanity prohibited");
+					p.flush();
+				}
+				//if input string contains certain string, warn the user without calling other methods
+				else if(line.indexOf("/to ") == 0){
 					sendmsg(line);
-				}else
+				}
+				else if(line.equals("/userlist")) 
+					send_userlist();
+				
+				else
 					broadcast(id + " : " + line);
 			}
 		}catch(Exception ex){
@@ -86,10 +98,33 @@ class ChatThread extends Thread{
 			Collection collection = hm.values();
 			Iterator iter = collection.iterator();
 			while(iter.hasNext()){
-				PrintWriter pw = (PrintWriter)iter.next();
+				Object cpw = iter.next();
+				if(cpw == hm.get(id)) continue;
+				PrintWriter pw = (PrintWriter)cpw;
 				pw.println(msg);
 				pw.flush();
 			}
 		}
 	} // broadcast
+	//if current printwriter matches the iterating printwriter, continue
+	//hasNext() method should be used only once for one rep!!!!!!!
+	public void send_userlist() {
+		synchronized(hm) {
+			Set set = hm.keySet();
+			Iterator iter = set.iterator();
+			PrintWriter pw = (PrintWriter)hm.get(id);
+			int count = 0;
+			while(iter.hasNext()) {
+				String key = (String)iter.next();
+				count++;
+				pw.println(key);
+				pw.flush();
+			}
+			pw.println("Total " + count + " users connected");
+			pw.flush();
+		}//send userlist
+	//get current chatthread id's printwriter
+	//for every key value, print the key and increment variable count
+	//print total variable count
+	}
 }
