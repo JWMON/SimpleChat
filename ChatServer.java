@@ -51,12 +51,13 @@ class ChatThread extends Thread{
 			while((line = br.readLine()) != null){
 				if(line.equals("/quit"))
 					break;
-				else if(line.contains("meanword") || line.contains("cuss1") || line.contains("cuss2") || line.contains("cuss3") || line.contains("cuss4")) {
+				if(line.contains("meanword") || line.contains("cuss1") || line.contains("cuss2") || line.contains("cuss3") || line.contains("cuss4")) {
 					PrintWriter p = (PrintWriter)hm.get(id);
 					p.println("WARNING : Profanity prohibited");
 					p.flush();
 				}
 				//if input string contains certain string, warn the user without calling other methods
+				//need to inform user what word was filtered
 				else if(line.indexOf("/to ") == 0){
 					sendmsg(line);
 				}
@@ -118,7 +119,7 @@ class ChatThread extends Thread{
 				String key = (String)iter.next();
 				count++;
 				pw.println(key);
-				pw.flush();
+				//pw.flush();
 			}
 			pw.println("Total " + count + " users connected");
 			pw.flush();
