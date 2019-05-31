@@ -165,7 +165,7 @@ class ChatThread extends Thread{
 				PrintWriter pw = (PrintWriter)obj;
 				pw.println(time + "Word filterd: "+ msg);
 				pw.flush();
-		} // if
+		}
 	}
 	
 	public void spamlist() {
