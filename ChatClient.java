@@ -2,6 +2,8 @@
 
 import java.net.*;
 import java.io.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class ChatClient {
 
@@ -10,6 +12,10 @@ public class ChatClient {
 			System.out.println("Usage : java ChatClient <username> <server-ip>");
 			System.exit(1);
 		}
+		Date date = new Date();
+		SimpleDateFormat d = new SimpleDateFormat("hh:mm:ss");
+		
+		String time = "[" + d.format(date) + "] ";
 		Socket sock = null;
 		BufferedReader br = null;
 		PrintWriter pw = null;
@@ -33,7 +39,7 @@ public class ChatClient {
 					break;
 				}
 			}
-			System.out.println("Connection closed.");
+			System.out.println(time + "Connection closed.");
 		}catch(Exception ex){
 			if(!endflag)
 				System.out.println(ex);
